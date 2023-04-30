@@ -14,6 +14,8 @@
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
+  boot.kernelParams = [ "quiet" ];
+
   fileSystems."/" =
     {
       device = "/dev/disk/by-uuid/43ffbc3b-6827-4868-92b5-6a1eebbee101";
