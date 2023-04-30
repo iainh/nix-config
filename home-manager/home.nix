@@ -208,11 +208,6 @@
 
   programs.firefox = {
     enable = true;
-    # package = pkgs.wrapFirefox pkgs.firefox-beta-unwrapped {
-    # extraPolicies = {
-    #   ExtensionSettings = {};
-    # };
-    # };
   };
 
 }
