@@ -57,162 +57,162 @@
     EDITOR = "hx";
   };
 
-    programs.bash = {
-      enable = true;
-      initExtra = ''
-      # Change the window title of X terminals
-case \$\{TERM\} in
-    [aEkx]term*|rxvt*|gnome*|konsole*|interix|tmux*)
-        PS1='\[\033]0;\u@\h:\w\007\]'
-        ;;
-    screen*)
-        PS1='\[\033k\u@\h:\w\033\\\]'
-        ;;
-    *)
-        unset PS1
-        ;;
-esac
+  programs.bash = {
+    enable = true;
+    initExtra = ''
+            # Change the window title of X terminals
+      case \$\{TERM\} in
+          [aEkx]term*|rxvt*|gnome*|konsole*|interix|tmux*)
+              PS1='\[\033]0;\u@\h:\w\007\]'
+              ;;
+          screen*)
+              PS1='\[\033k\u@\h:\w\033\\\]'
+              ;;
+          *)
+              unset PS1
+              ;;
+      esac
 
-use_color=false
-if type -P dircolors >/dev/null ; then
-    # Enable colors for ls, etc.  Prefer ~/.dir_colors #64489
-    LS_COLORS=
-    if [[ -f ~/.dir_colors ]] ; then
-        eval "$(dircolors -b ~/.dir_colors)"
-    elif [[ -f /etc/DIR_COLORS ]] ; then
-        eval "$(dircolors -b /etc/DIR_COLORS)"
-    else
-        eval "$(dircolors -b)"
-    fi
-    if [[ -n ''${LS_COLORS:+set} ]] ; then
-        use_color=true
-    else
-        # Delete it if it's empty as it's useless in that case.
-        unset LS_COLORS
-    fi
-else
-    case ''${TERM} in
-        [aEkx]term*|rxvt*|gnome*|konsole*|screen|tmux|cons25|*color) use_color=true;;
-    esac
-fi
+      use_color=false
+      if type -P dircolors >/dev/null ; then
+          # Enable colors for ls, etc.  Prefer ~/.dir_colors #64489
+          LS_COLORS=
+          if [[ -f ~/.dir_colors ]] ; then
+              eval "$(dircolors -b ~/.dir_colors)"
+          elif [[ -f /etc/DIR_COLORS ]] ; then
+              eval "$(dircolors -b /etc/DIR_COLORS)"
+          else
+              eval "$(dircolors -b)"
+          fi
+          if [[ -n ''${LS_COLORS:+set} ]] ; then
+              use_color=true
+          else
+              # Delete it if it's empty as it's useless in that case.
+              unset LS_COLORS
+          fi
+      else
+          case ''${TERM} in
+              [aEkx]term*|rxvt*|gnome*|konsole*|screen|tmux|cons25|*color) use_color=true;;
+          esac
+      fi
 
-parse_git_branch() {
-    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
-}
+      parse_git_branch() {
+          git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+      }
 
-if ''${use_color} ; then
-    if [[ ''${EUID} == 0 ]] ; then
-        PS1+='\[\033[01;31m\]\h\[\033[01;34m\] \w \$\[\033[00m\] '
-    else
-        PS1+='\[\033[01;32m\]\u@\h\[\033[01;34m\] \w\[\033[33m\]$(parse_git_branch)\[\033[37m\] \$\[\033[00m\] '
-    fi
+      if ''${use_color} ; then
+          if [[ ''${EUID} == 0 ]] ; then
+              PS1+='\[\033[01;31m\]\h\[\033[01;34m\] \w \$\[\033[00m\] '
+          else
+              PS1+='\[\033[01;32m\]\u@\h\[\033[01;34m\] \w\[\033[33m\]$(parse_git_branch)\[\033[37m\] \$\[\033[00m\] '
+          fi
 
-    alias grep='grep --colour=auto'
-    alias egrep='grep -E --colour=auto'
-    alias fgrep='grep -F --colour=auto'
-else
-    # show root@ when we don't have colors
-    PS1+='\u@\h \w \$ '
-fi
+          alias grep='grep --colour=auto'
+          alias egrep='grep -E --colour=auto'
+          alias fgrep='grep -F --colour=auto'
+      else
+          # show root@ when we don't have colors
+          PS1+='\u@\h \w \$ '
+      fi
 
-for sh in /etc/bash/bashrc.d/* ; do
-    [[ -r ''${sh} ]] && source "''${sh}"
-done
+      for sh in /etc/bash/bashrc.d/* ; do
+          [[ -r ''${sh} ]] && source "''${sh}"
+      done
 
-unset use_color sh
+      unset use_color sh
 
-    export INPUTRC=~/.inputrc
+          export INPUTRC=~/.inputrc
 
-    . "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
-      '';
-    };
+          . "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
+    '';
+  };
 
-    programs.readline = {
-      enable = true;
-    
-      extraConfig = ''
-        set mark-directories on
-      '';
-    };
+  programs.readline = {
+    enable = true;
 
-    programs.alacritty = {
-      enable = true;
-      settings = {
-        font.normal.family = "Liga SFMono Nerd Font";
-        font.size = 13;
+    extraConfig = ''
+      set mark-directories on
+    '';
+  };
 
-        # Colors (Mellow)
-        colors = {
-          # Default colors
-          primary = {
-            background = "#161617";
-            foreground = "#c9c7cd";
-          };
-          # Cursor colors
-          cursor = {
-            text = "#c9c7cd";
-            cursor = "#757581";
-          };
-          # Normal colors
-          normal = {
-            black = "#27272a";
-            red = "#f5a191";
-            green = "#90b99f";
-            yellow = "#e6b99d";
-            blue = "#aca1cf";
-            magenta = "#e29eca";
-            cyan = "#ea83a5";
-            white = "#c1c0d4";
-          };
-          # Bright colors
-          bright = {
-            black = "#353539";
-            red = "#ffae9f";
-            green = "#9dc6ac";
-            yellow = "#f0c5a9";
-            blue = "#b9aeda";
-            magenta = "#ecaad6";
-            cyan = "#f591b2";
-            white = "#cac9dd";
-          };
+  programs.alacritty = {
+    enable = true;
+    settings = {
+      font.normal.family = "Liga SFMono Nerd Font";
+      font.size = 13;
+
+      # Colors (Mellow)
+      colors = {
+        # Default colors
+        primary = {
+          background = "#161617";
+          foreground = "#c9c7cd";
+        };
+        # Cursor colors
+        cursor = {
+          text = "#c9c7cd";
+          cursor = "#757581";
+        };
+        # Normal colors
+        normal = {
+          black = "#27272a";
+          red = "#f5a191";
+          green = "#90b99f";
+          yellow = "#e6b99d";
+          blue = "#aca1cf";
+          magenta = "#e29eca";
+          cyan = "#ea83a5";
+          white = "#c1c0d4";
+        };
+        # Bright colors
+        bright = {
+          black = "#353539";
+          red = "#ffae9f";
+          green = "#9dc6ac";
+          yellow = "#f0c5a9";
+          blue = "#b9aeda";
+          magenta = "#ecaad6";
+          cyan = "#f591b2";
+          white = "#cac9dd";
         };
       };
     };
+  };
 
-    programs.direnv = {
-      enable = true;
-      nix-direnv.enable = true;
-    };
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+  };
 
-    programs.helix = {
-      enable = true;
-      package = inputs.helix-git.packages.x86_64-linux.helix;
-      settings = {
-        theme = "mellow";
-        editor.lsp.display-messages = true;
-        editor.lsp.display-inlay-hints = true;
-        editor.completion-trigger-len = 1;
-        editor.soft-wrap.enable = true;
-      };
+  programs.helix = {
+    enable = true;
+    package = inputs.helix-git.packages.x86_64-linux.helix;
+    settings = {
+      theme = "mellow";
+      editor.lsp.display-messages = true;
+      editor.lsp.display-inlay-hints = true;
+      editor.completion-trigger-len = 1;
+      editor.soft-wrap.enable = true;
     };
+  };
 
-    programs.git = {
-      enable = true;
-      userEmail = "iain@spiralpoint.org";
-      userName = "Iain H";
-    };
+  programs.git = {
+    enable = true;
+    userEmail = "iain@spiralpoint.org";
+    userName = "Iain H";
+  };
 
-    programs.fzf = {
-      enable = true;
-    };
+  programs.fzf = {
+    enable = true;
+  };
 
-    programs.firefox = {
-      enable = true;
-      # package = pkgs.wrapFirefox pkgs.firefox-beta-unwrapped {
-        # extraPolicies = {
-        #   ExtensionSettings = {};
-        # };
-      # };
-    };
-  
+  programs.firefox = {
+    enable = true;
+    # package = pkgs.wrapFirefox pkgs.firefox-beta-unwrapped {
+    # extraPolicies = {
+    #   ExtensionSettings = {};
+    # };
+    # };
+  };
+
 }
