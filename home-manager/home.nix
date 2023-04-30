@@ -132,7 +132,7 @@ unset use_color sh
     programs.alacritty = {
       enable = true;
       settings = {
-        font.normal.family = "Jetbrains Mono";
+        font.normal.family = "Liga SFMono Nerd Font";
         font.size = 13;
 
         # Colors (Mellow)
@@ -208,37 +208,5 @@ unset use_color sh
         # };
       # };
     };
-    
-    # home.pointerCursor = {
-    #   package = pkgs.apple-cursor;
-    #   name = "macOS-BigSur";
-    # };
-  # };
-
-  # # List packages installed in system profile. To search, run:
-  # # $ nix search wget
-  # environment.systemPackages = with pkgs; [
-	 #  curl
-  #   qmk
-  #   qmk-udev-rules
-  #   appimage-run
-  #   ripgrep
-  # ];
-
-  # fonts.fonts = with pkgs; [
-  #   jetbrains-mono
-  #   noto-fonts
-  #   noto-fonts-cjk
-  #   noto-fonts-emoji
-  #   liberation_ttf
-  #   fira-code
-  #   fira-code-symbols
-  #   iosevka-bin
-  # ];  
-
-  # nicely reload system units when changing configs
-  # systemd.user.startservices = "sd-switch";
-
-  # # https://nixos.wiki/wiki/faq/when_do_i_update_stateversion
-  # home.stateversion = "22.11";
+  
 }

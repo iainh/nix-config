@@ -151,6 +151,7 @@
     fira-code
     fira-code-symbols
     iosevka-bin
+    sf-mono-liga-bin
   ];  
 
   # List services that you want to enable:
