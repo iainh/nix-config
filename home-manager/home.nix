@@ -186,7 +186,7 @@
 
   programs.helix = {
     enable = true;
-    package = inputs.helix-git.packages.x86_64-linux.helix;
+    package = inputs.helix-git.packages.${pkgs.system}.helix;
     settings = {
       theme = "mellow";
       editor.lsp.display-messages = true;
