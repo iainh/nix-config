@@ -49,9 +49,13 @@
   # Enable home-manager and git
   programs.home-manager.enable = true;
 
-    # home.packages = [ pkgs.httpie ];
+  # home.packages = [ pkgs.httpie ];
 
-    home.stateVersion = "22.11";
+  home.stateVersion = "22.11";
+
+  home.sessionVariables = {
+    EDITOR = "hx";
+  };
 
     programs.bash = {
       enable = true;
@@ -118,6 +122,8 @@ done
 unset use_color sh
 
     export INPUTRC=~/.inputrc
+
+    . "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
       '';
     };
 
