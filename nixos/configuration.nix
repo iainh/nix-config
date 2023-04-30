@@ -68,10 +68,10 @@
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
   networking.hostName = "carbon"; # Define your hostname.
-  
+
   # Enable networking
   networking.networkmanager.enable = true;
-  systemd.services.NetworkManager-wait-online.enable = false; 
+  systemd.services.NetworkManager-wait-online.enable = false;
   systemd.services.ModemManager.enable = false;
 
   services.fwupd.enable = true;
@@ -135,7 +135,7 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-	  curl
+    curl
     qmk
     qmk-udev-rules
     appimage-run
@@ -152,7 +152,7 @@
     fira-code-symbols
     iosevka-bin
     sf-mono-liga-bin
-  ];  
+  ];
 
   # List services that you want to enable:
 
