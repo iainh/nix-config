@@ -15,6 +15,8 @@
 
     # TODO: Add any other flake you might need
     hardware.url = "github:nixos/nixos-hardware";
+    
+    helix-git.url = "github:iainh/helix/autopairs_fix";
 
     # Shameless plug: looking for a way to nixify your themes and make
     # everything match nicely? Try nix-colors!

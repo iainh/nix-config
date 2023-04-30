@@ -49,14 +49,6 @@
   # Enable home-manager and git
   programs.home-manager.enable = true;
 
-  # users.users.iain = {
-  #   isNormalUser = true;
-  #   description = "Iain Heggie";
-  #   extraGroups = [ "networkmanager" "wheel" ];
-  #   packages = with pkgs; [
-  #   ];
-  # };
-
     # home.packages = [ pkgs.httpie ];
 
     home.stateVersion = "22.11";
@@ -188,6 +180,7 @@ unset use_color sh
 
     programs.helix = {
       enable = true;
+      package = inputs.helix-git.packages.x86_64-linux.helix;
       settings = {
         theme = "mellow";
         editor.lsp.display-messages = true;
