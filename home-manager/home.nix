@@ -141,6 +141,9 @@
       font.normal.family = "Liga SFMono Nerd Font";
       font.size = 13;
 
+      shell.program = "bash";
+      shell.args = ["-l" "-c" "tmux attach || tmux"];
+
       # Colors (Mellow)
       colors = {
         # Default colors
@@ -196,6 +199,37 @@
     };
   };
 
+  programs.tmux = {
+    enable = true;
+    # aggressiveResize = true; -- Disabled to be iTerm-friendly
+    baseIndex = 1;
+    newSession = true;
+    # Stop tmux+escape craziness.
+    escapeTime = 0;
+    # Force tmux to use /tmp for sockets (WSL2 compat)
+    secureSocket = false;
+    # Enable mouse support
+    mouse = true;
+
+    plugins = with pkgs; [
+      tmuxPlugins.better-mouse-mode
+    ];
+
+    extraConfig = ''
+set -g default-terminal "tmux"
+set-option -sa terminal-overrides ",xterm*:Tc"
+
+# Smart pane switching with awareness of Helix splits.
+is_hx="ps -o state= -o comm= -t '#{pane_tty}' \
+    | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|hx)(diff)?$'"
+bind -n C-h if-shell "$is_hx" "send-keys C-h"  "select-pane -L"
+bind -n C-j if-shell "$is_hx" "send-keys C-j"  "select-pane -D"
+bind -n C-k if-shell "$is_hx" "send-keys C-k"  "select-pane -U"
+bind -n C-l if-shell "$is_hx" "send-keys C-l"  "select-pane -R"
+bind -n C-\\ if-shell "$is_hx" "send-keys C-\\" "select-pane -l"
+'';
+  };
+  
   programs.git = {
     enable = true;
     userEmail = "iain@spiralpoint.org";
