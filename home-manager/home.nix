@@ -57,8 +57,15 @@
     EDITOR = "hx";
   };
 
+  # Fix the cursor in applications like alacritty under wayland that don't inherit 
+  # gnome's cursor theme. 
+  home.file.".icons/default".source = "${pkgs.vanilla-dmz}/share/icons/Vanilla-DMZ";
+
   programs.bash = {
     enable = true;
+    shellAliases = {
+      hms = "home-manager switch --flake ~/nix-config";
+    };
     initExtra = ''
             # Change the window title of X terminals
       case \$\{TERM\} in
