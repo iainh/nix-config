@@ -61,6 +61,14 @@
   # gnome's cursor theme. 
   home.file.".icons/default".source = "${pkgs.vanilla-dmz}/share/icons/Vanilla-DMZ";
 
+  gtk = {
+    enable = true;
+    cursorTheme = {
+      name = "Vanilla-DMZ";
+      package = pkgs.vanilla-dmz;
+    };
+  };
+
   programs.bash = {
     enable = true;
     shellAliases = {
