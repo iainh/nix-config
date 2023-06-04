@@ -153,8 +153,8 @@
   programs.alacritty = {
     enable = true;
     settings = {
-      font.normal.family = "Liga SFMono Nerd Font";
-      font.size = 13;
+      font.normal.family = "iA Writer Mono S";
+      font.size = 14;
 
       shell.program = "bash";
       shell.args = ["-l" "-c" "tmux attach || tmux"];

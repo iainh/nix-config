@@ -3,4 +3,5 @@
 
 { pkgs ? (import ../nixpkgs.nix) { } }: {
   # example = pkgs.callPackage ./example { };
+  ia-writer-mono = pkgs.callPackage ./ia-writer-mono { };
 }

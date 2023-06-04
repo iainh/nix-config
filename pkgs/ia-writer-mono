@@ -1,0 +1,28 @@
+{ lib, stdenvNoCC, fetchFromGitHub }:
+
+stdenvNoCC.mkDerivation {
+  pname = "ia-writer-mono";
+  version = "unstable-2018-07-21";
+
+  src = fetchFromGitHub {
+    owner = "iaolo";
+    repo = "iA-Fonts";
+    rev = "09947469526cb474f1b68c87dffabd81767c4655";
+    hash = "sha256-qfxCZ38n7oSf2fxaXc/I+vTiUTHFnvHKohIciwOT0Y0=";
+  };
+
+  installPhase = ''
+    runHook preInstall
+    mkdir -p $out/share/fonts/truetype
+    ls "iA Writer Mono/Static/"*.ttf
+    cp "iA Writer Mono/Static/"*.ttf $out/share/fonts/truetype/
+    runHook postInstall
+  '';
+
+  meta = with lib; {
+    description = "iA Writer Mono S Typeface";
+    homepage = "https://ia.net/topics/in-search-of-the-perfect-writing-font";
+    license = licenses.ofl;
+    platforms = platforms.all;
+  };
+}
