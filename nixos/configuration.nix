@@ -84,6 +84,9 @@
 
   nix.extraOptions = ''experimental-features = nix-command flakes'';
 
+  # Access the keyboard for configuration as a normal non-root users 
+  hardware.keyboard.qmk.enable = true;
+
   services = {
     xserver = {
       enable = true;
