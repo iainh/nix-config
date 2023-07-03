@@ -67,7 +67,7 @@
   boot.initrd.systemd.enable = true;
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
-  networking.hostName = "carbon"; # Define your hostname.
+  networking.hostName = "carbon";
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -128,8 +128,7 @@
     isNormalUser = true;
     description = "Iain H";
     extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [
-    ];
+    # packages = with pkgs; [ ];
   };
 
   # List packages installed in system profile. To search, run:
