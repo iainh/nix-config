@@ -13,10 +13,12 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    # TODO: Add any other flake you might need
+    darwin.url = "github:lnl7/nix-darwin/master";
+    darwin.inputs.nixpkgs.follows = "nixpkgs";
+
     hardware.url = "github:nixos/nixos-hardware";
     
-    helix-git.url = "github:iainh/helix/autopairs_fix";
+    helix-git.url = "github:iainh/helix/update_highlight_symbol";
 
     # SFMono w/ patches
     sf-mono-liga-src = {
@@ -29,7 +31,7 @@
     # nix-colors.url = "github:misterio77/nix-colors";
   };
 
-  outputs = { self, nixpkgs, home-manager, hardware, ... }@inputs:
+  outputs = { self, darwin, nixpkgs, home-manager, hardware, ... }@inputs:
     let
       inherit (self) outputs;
       forAllSystems = nixpkgs.lib.genAttrs [
@@ -70,9 +72,15 @@
           specialArgs = { inherit inputs outputs; };
           modules = [
             hardware.nixosModules.lenovo-thinkpad-x1-6th-gen
-            # > Our main nixos configuration file <
             ./nixos/configuration.nix
           ];
+        };
+      };
+
+      darwinConfigurations = {
+        "bluejay" = darwin.lib.darwinSystem {
+          system = "aarch64-darwin";
+          modules = [ ./macos/configuration.nix ];
         };
       };
 
@@ -85,6 +93,14 @@
           modules = [
             # > Our main home-manager configuration file <
             ./home-manager/home.nix
+          ];
+        };
+
+        "iheggie@bluejay" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.aarch64-darwin; # Home-manager requires 'pkgs' instance
+          extraSpecialArgs = { inherit inputs outputs; };
+          modules = [
+            ./home-manager/home-macos.nix
           ];
         };
       };
