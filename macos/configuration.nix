@@ -4,8 +4,6 @@
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
 
-  # allow zsh as a login shell
-  # environment.shells = [ pkgs.zsh ];
   environment.shells = with pkgs; [bashInteractive zsh ];
   
   programs.zsh.enable = true;
@@ -45,17 +43,7 @@
     noto-fonts-emoji
     liberation_ttf
     iosevka-bin
-
+    ia-writer-mono
   ];
-
-  # homebrew = {
-  #   enable = true;
-
-  #   casks = [
-  #     "1password"
-  #     "hammerspoon"
-  #     "wezterm"
-  #   ];
-  # };
 }
 
