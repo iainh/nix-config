@@ -59,13 +59,13 @@
 
   # Fix the cursor in applications like alacritty under wayland that don't inherit 
   # gnome's cursor theme. 
-  home.file.".icons/default".source = "${pkgs.vanilla-dmz}/share/icons/Vanilla-DMZ";
+  home.file.".icons/default".source = "${pkgs.apple-cursor}/share/icons/macOS-Monterey";
 
   gtk = {
     enable = true;
     cursorTheme = {
-      name = "Vanilla-DMZ";
-      package = pkgs.vanilla-dmz;
+      name = "macOS-Monterey";
+      package = pkgs.apple-cursor;
     };
   };
 
