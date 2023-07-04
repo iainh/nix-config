@@ -142,6 +142,8 @@
     qmk-udev-rules
     appimage-run
     ripgrep
+    qemu
+    p7zip
   ];
 
   fonts.fonts = with pkgs; [
