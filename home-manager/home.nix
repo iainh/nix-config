@@ -39,7 +39,10 @@
     };
   };
 
- programs.firefox = {
+  # Reduce font size of alacritty
+  programs.alacritty.settings.font.size = pkgs.lib.mkForce 13;
+
+  programs.firefox = {
     enable = true;
   };
 
