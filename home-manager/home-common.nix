@@ -132,6 +132,11 @@
       font.normal.family = "iA Writer Mono S";
       font.size = 15;
 
+      # window.decorations = "buttonless";
+      window.decorations_theme_variant = "Dark";
+      window.padding.y = 8;
+      window.padding.x = 8;
+
       # Colours (Rose Pine)
       colors = {
         primary = {
