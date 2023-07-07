@@ -159,6 +159,14 @@
       shell.program = "bash";
       # shell.args = ["-l" "-c" "tmux attach || tmux"];
 
+      key_bindings = [
+        {
+          key = "N";
+          mods = "Shift|Control";
+          action = "CreateNewWindow";
+        }
+      ];
+
       # Colors (Rose Pine)
       colors = {
         primary = {
