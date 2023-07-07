@@ -79,6 +79,7 @@
 
       darwinConfigurations = {
         "bluejay" = darwin.lib.darwinSystem {
+          specialArgs = { inherit inputs outputs; };
           system = "aarch64-darwin";
           modules = [ ./macos/configuration.nix ];
         };
