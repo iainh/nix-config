@@ -130,7 +130,6 @@
     enable = true;
     settings = {
       font.normal.family = "iA Writer Mono S";
-      font.size = 15;
 
       # window.decorations = "buttonless";
       window.decorations_theme_variant = "Dark";
