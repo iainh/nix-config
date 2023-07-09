@@ -17,7 +17,7 @@
     darwin.inputs.nixpkgs.follows = "nixpkgs";
 
     hardware.url = "github:nixos/nixos-hardware";
-    
+
     helix-git.url = "github:iainh/helix/update_highlight_symbol";
 
     # SFMono w/ patches
@@ -93,7 +93,7 @@
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
             # > Our main home-manager configuration file <
-            ./home-manager/home.nix
+            ./home-manager/linux.nix
           ];
         };
 
@@ -101,7 +101,7 @@
           pkgs = nixpkgs.legacyPackages.aarch64-darwin; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
-            ./home-manager/home-macos.nix
+            ./home-manager/macos.nix
           ];
         };
       };

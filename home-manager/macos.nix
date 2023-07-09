@@ -14,7 +14,7 @@
     # ./nvim.nix
 
     # Import shared home manager configuration
-    ./home-common.nix
+    ./common.nix
   ];
 
   home = {
@@ -29,10 +29,10 @@
 
   home.stateVersion = "22.11";
 
-  programs.dircolors = { 
+  programs.dircolors = {
     enable = true;
   };
-  
+
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;
