@@ -64,6 +64,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
+  boot.loader.systemd-boot.configurationLimit = 5;
   boot.initrd.systemd.enable = true;
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
@@ -147,15 +148,16 @@
   ];
 
   fonts.fonts = with pkgs; [
+    google-fonts
     jetbrains-mono
     noto-fonts
     noto-fonts-cjk
     noto-fonts-emoji
     liberation_ttf
-    fira-code
-    fira-code-symbols
+    # fira-code
+    # fira-code-symbols
     iosevka-bin
-    sf-mono-liga-bin
+    # sf-mono-liga-bin
     ia-writer-mono
   ];
 
