@@ -44,4 +44,25 @@
 
   programs.ripgrep.enable = true;
 
+  programs.kitty = {
+    enable = true;
+    settings = {
+      theme = "Rosé Pine";
+      cursor_beam_thickness = "2.0";
+      # font_family = "Berkeley Mono";
+
+      # font_family = "iA Writer Mono S";
+      font_family = "iA Writer Mono S Regular";
+      bold_font = "iA Writer Mono S Bold";
+      italic_font = "iA Writer Mono S Italic";
+      bold_italic_font = "iA Writer Mono S Bold Italic";
+
+
+      font_size = 17;
+      # Gamma and contrast. The default on Linux is 1.0 gamma and 0 contrast,
+      # 1.7 gamma and 30 contrast on MacOS.
+      text_composition_strategy = "1.1 10";
+    };
+  };
+
 }
