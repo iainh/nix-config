@@ -173,7 +173,9 @@
   programs.alacritty = {
     enable = true;
     settings = {
-      font.normal.family = "iA Writer Mono S";
+      # font.normal.family = "iA Writer Mono S";
+      font.normal.family = "DM Mono";
+      font.bold.weight = "Medium";
 
       # window.decorations = "buttonless";
       window.decorations_theme_variant = "Dark";

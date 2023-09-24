@@ -147,7 +147,7 @@
     p7zip
   ];
 
-  fonts.fonts = with pkgs; [
+  fonts.packages= with pkgs; [
     google-fonts
     jetbrains-mono
     noto-fonts
@@ -159,6 +159,7 @@
     iosevka-bin
     # sf-mono-liga-bin
     ia-writer-mono
+    dm-mono
   ];
 
   # List services that you want to enable:

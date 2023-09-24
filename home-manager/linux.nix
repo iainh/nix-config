@@ -40,7 +40,7 @@
   };
 
   # Reduce font size of alacritty
-  programs.alacritty.settings.font.size = pkgs.lib.mkForce 13;
+  programs.alacritty.settings.font.size = pkgs.lib.mkForce 14;
 
   programs.firefox = {
     enable = true;
