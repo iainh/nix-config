@@ -9,7 +9,7 @@ stdenvNoCC.mkDerivation
     owner = "googlefonts";
     repo = "dm-mono";
     rev = "57fadabfb200a77de2812540026c249dc3013077";
-    hash = "sha256-RSHHxiCac18qqF+hW5M3BbBcra4AQpNLLlUmhiWj9f8=";
+    hash = "sha256-Xj6UmvH7tqW6xdobBxuafqc7TB1nrTFwHWv4DaZmwx8=";
   };
 
   installPhase = ''
