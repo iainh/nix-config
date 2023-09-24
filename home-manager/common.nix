@@ -55,6 +55,14 @@
     };
 
     initExtra = ''
+
+      export DIRENV_LOG_FORMAT=
+
+      
+      if [ -z "$__NIX_DARWIN_SET_ENVIRONMENT_DONE" ]; then
+        . /nix/store/qb6x3h3hkczrjblnv976fxg95mrgrkm0-set-environment
+      fi
+
       prompt_gentoo_setup () {
         local prompt_gentoo_prompt=''${1:-'blue'}
         local prompt_gentoo_user=''${2:-'green'}
@@ -271,11 +279,12 @@
     enable = true;
     package = inputs.helix-git.packages.${pkgs.system}.helix;
     settings = {
-      theme = "rose_pine";
+      theme = "selenized_dark";
       editor.lsp.display-messages = true;
       editor.lsp.display-inlay-hints = true;
       editor.completion-trigger-len = 1;
       editor.soft-wrap.enable = true;
+      editor.smart-tab.enable = true;
     };
     languages = {
       language = [{

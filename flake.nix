@@ -18,7 +18,7 @@
 
     hardware.url = "github:nixos/nixos-hardware";
 
-    helix-git.url = "github:iainh/helix/update_highlight_symbol";
+    helix-git.url = "github:helix-editor/helix";
 
     # SFMono w/ patches
     sf-mono-liga-src = {

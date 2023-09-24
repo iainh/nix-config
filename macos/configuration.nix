@@ -50,9 +50,10 @@
   programs.bash.enable = true;
 
   environment.systemPackages = with pkgs; [
-    alacritty
+    kitty
     nil
     nixpkgs-fmt
+    nmap
   ];
 
   # nix.package = pkgs.nixUnstable;
@@ -83,6 +84,7 @@
     liberation_ttf
     iosevka-bin
     ia-writer-mono
+    dm-mono
   ];
 }
 
