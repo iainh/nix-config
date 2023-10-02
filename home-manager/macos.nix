@@ -30,7 +30,7 @@
   home.stateVersion = "22.11";
 
   # Set the font size of alacritty
-  programs.alacritty.settings.font.size = pkgs.lib.mkForce 16;
+  programs.alacritty.settings.font.size = pkgs.lib.mkForce 17;
 
 
   programs.dircolors = {
