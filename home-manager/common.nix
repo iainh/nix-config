@@ -88,10 +88,6 @@
     '';
   };
 
-  programs.zellij = {
-    enable = true;
-  };
-
   programs.bash = {
     enable = true;
     shellAliases = {
