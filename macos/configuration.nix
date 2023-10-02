@@ -50,7 +50,7 @@
   programs.bash.enable = true;
 
   environment.systemPackages = with pkgs; [
-    kitty
+    alacritty
     nil
     nixpkgs-fmt
     nmap
@@ -76,15 +76,18 @@
     experimental-features = nix-command flakes
   '';
 
-  fonts.fonts = with pkgs; [
-    jetbrains-mono
-    noto-fonts
-    noto-fonts-cjk
-    noto-fonts-emoji
-    liberation_ttf
-    iosevka-bin
-    ia-writer-mono
-    dm-mono
-  ];
+  fonts = {
+    fontDir.enable = true;
+    fonts = with pkgs; [
+      jetbrains-mono
+      noto-fonts
+      noto-fonts-cjk
+      noto-fonts-emoji
+      liberation_ttf
+      iosevka-bin
+      ia-writer-mono
+      dm-mono
+    ];
+  };
 }
 
