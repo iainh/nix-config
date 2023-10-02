@@ -177,103 +177,48 @@
   programs.alacritty = {
     enable = true;
     settings = {
-      # font.normal.family = "iA Writer Mono S";
-      font.normal.family = "DM Mono";
-      font.bold.weight = "Medium";
+      font.normal.family = "iA Writer Mono S";
+      # font.normal.family = "DM Mono";
+      # font.bold.weight = "Medium";
 
       # window.decorations = "buttonless";
       window.decorations_theme_variant = "Dark";
-      window.padding.y = 8;
-      window.padding.x = 8;
+      # window.padding.y = 8;
+      # window.padding.x = 8;
 
-      # Colours (Rose Pine)
+      # Colors (Wombat)
       colors = {
+        # Default colors
         primary = {
-          foreground = "#e0def4";
-          background = "#191724";
-          dim_foreground = "#908caa";
-          bright_foreground = "#e0def4";
+          background = "0x1f1f1f";
+          foreground = "0xe5e1d8";
         };
-
-        cursor = {
-          text = "#e0def4";
-          cursor = "#524f67";
-        };
-
-        vi_mode_cursor = {
-          text = "#e0def4";
-          cursor = "#524f67";
-        };
-
-        search.matches = {
-          foreground = "#908caa";
-          background = "#26233a";
-        };
-
-        search.focused_match = {
-          foreground = "#191724";
-          background = "#ebbcba";
-        };
-
-        hints.start = {
-          foreground = "#908caa";
-          background = "#1f1d2e";
-        };
-
-        hints.end = {
-          foreground = "#6e6a86";
-          background = "#1f1d2e";
-        };
-
-        line_indicator = {
-          foreground = "None";
-          background = "None";
-        };
-
-        footer_bar = {
-          foreground = "#e0def4";
-          background = "#1f1d2e";
-        };
-
-        selection = {
-          text = "#e0def4";
-          background = "#403d52";
-        };
-
-        normal = {
-          black = "#26233a";
-          red = "#eb6f92";
-          green = "#31748f";
-          yellow = "#f6c177";
-          blue = "#9ccfd8";
-          magenta = "#c4a7e7";
-          cyan = "#ebbcba";
-          white = "#e0def4";
-        };
-
-        bright = {
-          black = "#6e6a86";
-          red = "#eb6f92";
-          green = "#31748f";
-          yellow = "#f6c177";
-          blue = "#9ccfd8";
-          magenta = "#c4a7e7";
-          cyan = "#ebbcba";
-          white = "#e0def4";
-        };
-
-        dim = {
-          black = "#6e6a86";
-          red = "#eb6f92";
-          green = "#31748f";
-          yellow = "#f6c177";
-          blue = "#9ccfd8";
-          magenta = "#c4a7e7";
-          cyan = "#ebbcba";
-          white = "#e0def4";
-        };
+        
+        # Normal colors
+        normal ={
+          black = "0x000000";
+          red = "0xf7786d";
+          green = "0xbde97c";
+          yellow = "0xefdfac";
+          blue = "0x6ebaf8";
+          magenta = "0xef88ff";
+          cyan = "0x90fdf8";
+          white = "0xe5e1d8";
+      };
+      
+      # Bright colors
+      bright ={
+        black ="0xb4b4b4";
+        red="0xf99f92";
+        green="0xe3f7a1";
+        yellow="0xf2e9bf";
+        blue="0xb3d2ff";
+        magenta="0xe5bdff";
+        cyan="0xc2fefa";
+        white="0xffffff";
       };
     };
+  };
   };
 
   programs.direnv = {
@@ -350,6 +295,13 @@
       sub-langs = "all";
       downloader = "aria2c";
       downloader-args = "aria2c:'-c -x8 -s8 -k1M'";
+    };
+  };
+
+  programs.zellij = {
+    enable = true;
+    settings = {
+      default_layout = "compact";
     };
   };
 
