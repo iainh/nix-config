@@ -78,7 +78,7 @@
       };
 
       darwinConfigurations = {
-        "bluejay" = darwin.lib.darwinSystem {
+        "yew" = darwin.lib.darwinSystem {
           specialArgs = { inherit inputs outputs; };
           system = "aarch64-darwin";
           modules = [ ./macos/configuration.nix ];
@@ -97,7 +97,7 @@
           ];
         };
 
-        "iheggie@bluejay" = home-manager.lib.homeManagerConfiguration {
+        "iheggie@yew" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.aarch64-darwin; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
