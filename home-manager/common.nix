@@ -44,6 +44,8 @@
     EDITOR = "hx";
   };
 
+  home.sessionPath = [ "$HOME/.cargo/bin" ];
+
   programs.zsh = {
     enable = true;
     shellAliases = {
