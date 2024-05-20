@@ -174,11 +174,6 @@
   programs.alacritty = {
     enable = true;
     settings = {
-      #font.normal.family = "iA Writer Mono S";
-      # font.normal.family = "Meslo LG";
-      # font.normal.family = "SF Mono Liga";
-      # font.normal.family = "Iosevka Comfy";
-      # font.normal.family = "DM Mono";
       font.normal.family = "Josevka";
 
       font.offset.y = 2;
@@ -198,7 +193,7 @@
         };
 
         # Normal colors
-        normal ={
+        normal = {
           black = "0x000000";
           red = "0xf7786d";
           green = "0xbde97c";
@@ -207,21 +202,21 @@
           magenta = "0xef88ff";
           cyan = "0x90fdf8";
           white = "0xe5e1d8";
-      };
+        };
 
-      # Bright colors
-      bright ={
-        black ="0xb4b4b4";
-        red="0xf99f92";
-        green="0xe3f7a1";
-        yellow="0xf2e9bf";
-        blue="0xb3d2ff";
-        magenta="0xe5bdff";
-        cyan="0xc2fefa";
-        white="0xffffff";
+        # Bright colors
+        bright = {
+          black = "0xb4b4b4";
+          red = "0xf99f92";
+          green = "0xe3f7a1";
+          yellow = "0xf2e9bf";
+          blue = "0xb3d2ff";
+          magenta = "0xe5bdff";
+          cyan = "0xc2fefa";
+          white = "0xffffff";
+        };
       };
     };
-  };
   };
 
   programs.direnv = {

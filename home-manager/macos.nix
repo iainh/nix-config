@@ -31,6 +31,7 @@
 
   # Set the font size of alacritty
   programs.alacritty.settings.font.size = pkgs.lib.mkForce 17;
+  programs.alacritty.settings.font.normal.style = pkgs.lib.mkForce "Regular";
 
 
   programs.dircolors = {

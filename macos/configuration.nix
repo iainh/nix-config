@@ -84,9 +84,9 @@
       noto-fonts-cjk
       noto-fonts-emoji
       liberation_ttf
-      iosevka-bin
       ia-writer-mono
       dm-mono
+      josevka
     ];
   };
 }
