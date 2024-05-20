@@ -54,6 +54,7 @@
     nil
     nixpkgs-fmt
     nmap
+    erlang_nox # Runtime dependency for gleam
   ];
 
   # nix.package = pkgs.nixUnstable;
