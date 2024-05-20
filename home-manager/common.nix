@@ -58,7 +58,6 @@
 
       export DIRENV_LOG_FORMAT=
 
-      
       if [ -z "$__NIX_DARWIN_SET_ENVIRONMENT_DONE" ]; then
         . /nix/store/qb6x3h3hkczrjblnv976fxg95mrgrkm0-set-environment
       fi
@@ -173,9 +172,15 @@
   programs.alacritty = {
     enable = true;
     settings = {
-      font.normal.family = "iA Writer Mono S";
+      #font.normal.family = "iA Writer Mono S";
+      # font.normal.family = "Meslo LG";
+      # font.normal.family = "SF Mono Liga";
+      # font.normal.family = "Iosevka Comfy";
       # font.normal.family = "DM Mono";
-      # font.bold.weight = "Medium";
+      font.normal.family = "Josevka";
+
+      font.offset.y = 2;
+      font.glyph_offset.y = 1;
 
       # window.decorations = "buttonless";
       window.decorations_theme_variant = "Dark";
@@ -189,7 +194,7 @@
           background = "0x1f1f1f";
           foreground = "0xe5e1d8";
         };
-        
+
         # Normal colors
         normal ={
           black = "0x000000";
@@ -201,7 +206,7 @@
           cyan = "0x90fdf8";
           white = "0xe5e1d8";
       };
-      
+
       # Bright colors
       bright ={
         black ="0xb4b4b4";
@@ -226,7 +231,8 @@
     enable = true;
     package = inputs.helix-git.packages.${pkgs.system}.helix;
     settings = {
-      theme = "selenized_dark";
+      # theme = "curzon";
+      theme = "gruber-darker";
       editor.lsp.display-messages = true;
       editor.lsp.display-inlay-hints = true;
       editor.completion-trigger-len = 1;

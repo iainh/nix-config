@@ -76,6 +76,13 @@
   systemd.services.ModemManager.enable = false;
 
   services.fwupd.enable = true;
+  services.gnome.gnome-keyring = {
+    enable = true;
+  };
+
+  services.devmon.enable = true;
+  services.gvfs.enable = true;
+  services.udisks2.enable = true;
 
   # Set your time zone.
   time.timeZone = "America/Toronto";
@@ -85,28 +92,39 @@
 
   nix.extraOptions = ''experimental-features = nix-command flakes'';
 
-  # Access the keyboard for configuration as a normal non-root users 
+  # Access the keyboard for configuration as a normal non-root users
   hardware.keyboard.qmk.enable = true;
+
+  hardware.opengl.enable = true;
+  hardware.opengl.driSupport = true;
 
   services = {
     xserver = {
       enable = true;
-      displayManager.gdm.enable = true;
-      displayManager.gdm.wayland = true;
-      desktopManager.gnome.enable = true;
     };
+    displayManager.sddm.wayland.enable = true;
   };
 
   # Configure keymap in X11
   services.xserver = {
-    layout = "us";
-    xkbVariant = "";
+    xkb.layout = "us";
+    xkb.variant = "";
   };
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
-  services.avahi.enable = true;
-  services.avahi.nssmdns = true;
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+    publish  = {
+      enable = true;
+      addresses = true;
+      domain = true;
+      hinfo = true;
+      userServices = true;
+      workstation = true;
+    };
+  };
 
   # Enable sound with pipewire.
   sound.enable = true;
@@ -129,9 +147,10 @@
   # services.xserver.libinput.enable = true;
 
   users.users.iain = {
+    # shell = pkgs.fish;
     isNormalUser = true;
     description = "Iain H";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "storage" "wheel" "video"];
     # packages = with pkgs; [ ];
   };
 
@@ -145,6 +164,23 @@
     ripgrep
     qemu
     p7zip
+    gleam
+    fwupd
+    zed-editor
+    j4-dmenu-desktop
+    clang-tools
+    sway
+    wl-clipboard
+    bemenu # wayland clone of dmenu
+    mako # notification system developed by swaywm maintainer
+    wdisplays # tool to configure displays
+    swaylock
+    swayidle
+    networkmanagerapplet
+    # sddm-chili-theme
+    grc
+    nodePackages.prettier
+    j4-dmenu-desktop
   ];
 
   fonts.packages= with pkgs; [
@@ -154,18 +190,23 @@
     noto-fonts-cjk
     noto-fonts-emoji
     liberation_ttf
-    # fira-code
-    # fira-code-symbols
     iosevka-bin
-    # sf-mono-liga-bin
+    sf-mono-liga-bin
     ia-writer-mono
+    josevka
     dm-mono
+    hack-font
+    monaspace
   ];
 
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
+
+  programs.sway = {
+    enable = true;
+  };
 
   system.stateVersion = "22.11"; # Did you read the comment?
 }

@@ -4,5 +4,6 @@
 { pkgs ? (import ../nixpkgs.nix) { } }: {
   # example = pkgs.callPackage ./example { };
   ia-writer-mono = pkgs.callPackage ./ia-writer-mono { };
+  josevka = pkgs.callPackage ./josevka { inherit (pkgs) iosevka; };
   dm-mono = pkgs.callPackage ./dm-mono { };
 }

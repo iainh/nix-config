@@ -13,12 +13,24 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
+    lix = {
+      url = "git+https://git@git.lix.systems/lix-project/lix?ref=refs/tags/2.90-beta.1";
+      flake = false;    
+    };
+
+    lix-module = {
+      url = "git+https://git@git.lix.systems/lix-project/nixos-module";
+      inputs.lix.follows = "lix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     darwin.url = "github:lnl7/nix-darwin/master";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
 
     hardware.url = "github:nixos/nixos-hardware";
 
     helix-git.url = "github:helix-editor/helix";
+    # helix-git.url = "github:the-mikedavis/helix/driver";
 
     # SFMono w/ patches
     sf-mono-liga-src = {
@@ -31,15 +43,15 @@
     # nix-colors.url = "github:misterio77/nix-colors";
   };
 
-  outputs = { self, darwin, nixpkgs, home-manager, hardware, ... }@inputs:
+  outputs = { self, darwin, nixpkgs, lix-module, home-manager, hardware, ... }@inputs:
     let
       inherit (self) outputs;
       forAllSystems = nixpkgs.lib.genAttrs [
-        "aarch64-linux"
-        "i686-linux"
+        # "aarch64-linux"
+        # "i686-linux"
         "x86_64-linux"
-        "aarch64-darwin"
-        "x86_64-darwin"
+        # "aarch64-darwin"
+        # "x86_64-darwin"
       ];
     in
     rec {
@@ -71,6 +83,7 @@
         carbon = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
           modules = [
+            lix-module.nixosModules.default
             hardware.nixosModules.lenovo-thinkpad-x1-6th-gen
             ./nixos/configuration.nix
           ];
