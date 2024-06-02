@@ -232,7 +232,8 @@
     package = inputs.helix-git.packages.${pkgs.system}.helix;
     settings = {
       # theme = "curzon";
-      theme = "gruber-darker";
+      # theme = "gruber-darker";
+      theme = "nord-night";
       editor.lsp.display-messages = true;
       editor.lsp.display-inlay-hints = true;
       editor.completion-trigger-len = 1;
