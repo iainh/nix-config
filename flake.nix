@@ -13,16 +13,8 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    lix = {
-      url = "git+https://git@git.lix.systems/lix-project/lix?ref=refs/tags/2.90-beta.1";
-      flake = false;    
-    };
+    determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/0.1";
 
-    lix-module = {
-      url = "git+https://git@git.lix.systems/lix-project/nixos-module";
-      inputs.lix.follows = "lix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
 
     darwin.url = "github:lnl7/nix-darwin/master";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
@@ -31,6 +23,7 @@
 
     helix-git.url = "github:helix-editor/helix";
     # helix-git.url = "github:the-mikedavis/helix/driver";
+    simple-completion-language-server.url = "github:estin/simple-completion-language-server";
 
     # SFMono w/ patches
     sf-mono-liga-src = {
@@ -43,14 +36,14 @@
     # nix-colors.url = "github:misterio77/nix-colors";
   };
 
-  outputs = { self, darwin, nixpkgs, lix-module, home-manager, hardware, ... }@inputs:
+  outputs = { self, darwin, determinate, nixpkgs, home-manager, hardware, ... }@inputs:
     let
       inherit (self) outputs;
       forAllSystems = nixpkgs.lib.genAttrs [
         # "aarch64-linux"
         # "i686-linux"
         "x86_64-linux"
-        # "aarch64-darwin"
+        "aarch64-darwin"
         # "x86_64-darwin"
       ];
     in
@@ -83,7 +76,6 @@
         carbon = nixpkgs.lib.nixosSystem {
           specialArgs = { inherit inputs outputs; };
           modules = [
-            lix-module.nixosModules.default
             hardware.nixosModules.lenovo-thinkpad-x1-6th-gen
             ./nixos/configuration.nix
           ];
@@ -94,7 +86,20 @@
         "yew" = darwin.lib.darwinSystem {
           specialArgs = { inherit inputs outputs; };
           system = "aarch64-darwin";
-          modules = [ ./macos/configuration.nix ];
+          modules = [ 
+     # Load the Determinate module
+        determinate.darwinModules.default
+./macos/configuration.nix ];
+};
+         "ginkgo" = darwin.lib.darwinSystem {
+          specialArgs = { inherit inputs outputs; };
+          system = "aarch64-darwin";
+          modules = [ 
+     # Load the Determinate module
+        determinate.darwinModules.default
+
+./macos/configuration.nix ];
+        
         };
       };
 
@@ -116,7 +121,15 @@
           modules = [
             ./home-manager/macos.nix
           ];
+}; 
+        "iheggie@ginkgo" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.aarch64-darwin; # Home-manager requires 'pkgs' instance
+          extraSpecialArgs = { inherit inputs outputs; };
+          modules = [
+            ./home-manager/macos.nix
+          ];
         };
-      };
+       };
+      
     };
 }

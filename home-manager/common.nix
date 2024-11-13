@@ -174,7 +174,7 @@
   programs.alacritty = {
     enable = true;
     settings = {
-      font.normal.family = "Josevka";
+      font.normal.family = "CodeNewRoman Nerd Font Mono";
 
       font.offset.y = 2;
       font.glyph_offset.y = 1;
@@ -229,7 +229,7 @@
     package = inputs.helix-git.packages.${pkgs.system}.helix;
     settings = {
       # theme = "curzon";
-      theme = "gruber-darker";
+      theme = "noctis_bordo";
       editor.lsp.display-messages = true;
       editor.lsp.display-inlay-hints = true;
       editor.completion-trigger-len = 1;
@@ -237,11 +237,28 @@
       editor.smart-tab.enable = true;
     };
     languages = {
+      language-server.sclc = {
+        command = "simple-completion-language-server";
+        config =
+          {
+            max_completion_items = 20; # set max completion results len for each group: words, snippets, unicode-input
+            snippets_first = true; # completions will return before snippets by default
+            feature_words = true; # enable completion by word
+            feature_snippets = true; # enable snippets
+            feature_unicode_input = true; # enable "unicode input"
+            feature_paths = true; # enable path completion
+          };
+      };
       language = [{
         name = "nix";
         formatter = { command = "nixpkgs-fmt"; };
         auto-format = true;
-      }];
+      }
+        {
+          name = "rust";
+          auto-format = true;
+          language-servers = [ "sclc" "rust-analyzer" ];
+        }];
     };
   };
 
@@ -280,6 +297,15 @@
     enable = true;
     userEmail = "iain@spiralpoint.org";
     userName = "Iain H";
+    aliases = {
+      st = "status - sb";
+      ci = "commit";
+      cm = "commit -am";
+      br = "branch";
+      co = "checkout";
+      df = "diff";
+      undo = "reset - -hard";
+    };
   };
 
   programs.fzf = {
@@ -291,17 +317,24 @@
     settings = {
       embed-thumbnail = true;
       embed-subs = true;
-      sub-langs = "all";
-      downloader = "aria2c";
-      downloader-args = "aria2c:'-c -x8 -s8 -k1M'";
+      sub-langs = " all ";
+      downloader = "
+        aria2c ";
+      downloader-args = " aria2c:'-c - x8 - s8 - k1M' ";
     };
   };
 
   programs.zellij = {
     enable = true;
     settings = {
-      default_layout = "compact";
+      default_layout = "
+        compact ";
     };
   };
 
 }
+
+
+
+
+

@@ -26,6 +26,14 @@
   programs.home-manager.enable = true;
 
   # home.packages = [ pkgs.httpie ];
+  home.packages = [ pkgs.mold-wrapped ];
+
+  home.file.".cargo/config.toml".text = ''
+    [target.x86_64-unknown-linux-gnu]
+    linker = "clang"
+    rustflags = ["-C", "link-arg=-fuse-ld=${pkgs.mold-wrapped}/bin/mold"]
+  '';
+
 
   home.stateVersion = "22.11";
 

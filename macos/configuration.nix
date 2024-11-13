@@ -1,5 +1,8 @@
 { inputs, outputs, lib, config, pkgs, ... }: {
 
+
+  ids.gids.nixbld = 350;
+
   nixpkgs = {
     # You can add overlays here
     overlays = [
@@ -38,8 +41,19 @@
       # Enable flakes and new 'nix' command
       experimental-features = "nix-command flakes";
       # Deduplicate and optimize nix store
-      auto-optimise-store = true;
+      #      optimise.automatic = true;
     };
+  };
+
+  homebrew = {
+    enable = true;
+
+    casks = [
+      "1password"
+      "alacritty"
+      "firefox"
+      "zed"
+    ];
   };
 
   # List packages installed in system profile. To search by name, run:
@@ -55,6 +69,11 @@
     nixpkgs-fmt
     nmap
     erlang_nox # Runtime dependency for gleam
+    go
+    gopls
+    gotools
+    go-tools
+    inputs.simple-completion-language-server.defaultPackage.${pkgs.system}
   ];
 
   # nix.package = pkgs.nixUnstable;
@@ -78,17 +97,18 @@
   '';
 
   fonts = {
-    fontDir.enable = true;
-    fonts = with pkgs; [
-      jetbrains-mono
-      noto-fonts
-      noto-fonts-cjk
-      noto-fonts-emoji
-      liberation_ttf
-      ia-writer-mono
-      dm-mono
-      josevka
+    packages = with pkgs; [
+      # jetbrains-mono
+      # noto-fonts
+      # noto-fonts-cjk
+      # noto-fonts-emoji
+      # liberation_ttf
+      # ia-writer-mono
+      # dm-mono
+      # josevka
+      intel-one-mono
+      (nerdfonts.override { fonts = [ "CodeNewRoman" ]; })
+
     ];
   };
 }
-
