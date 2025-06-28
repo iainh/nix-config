@@ -4,26 +4,29 @@
   inputs = {
     # Nixpkgs
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    # nixpkgs.url = "github:nixos/nixpkgs/release-25.05";
     # You can access packages and modules from different nixpkgs revs
     # at the same time. Here's an working example:
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+
     # Also see the 'unstable-packages' overlay at 'overlays/default.nix'.
+
+    nixpkgs-master.url = "github:nixos/nixpkgs/master";
+
+    fenix = {
+      url = "github:nix-community/fenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # Home manager
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/0.1";
-
-
-    darwin.url = "github:lnl7/nix-darwin/master";
+    darwin.url = "github:nix-darwin/nix-darwin";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
 
     hardware.url = "github:nixos/nixos-hardware";
 
     helix-git.url = "github:helix-editor/helix";
-    # helix-git.url = "github:the-mikedavis/helix/driver";
-    simple-completion-language-server.url = "github:estin/simple-completion-language-server";
 
     # SFMono w/ patches
     sf-mono-liga-src = {
@@ -36,7 +39,7 @@
     # nix-colors.url = "github:misterio77/nix-colors";
   };
 
-  outputs = { self, darwin, determinate, nixpkgs, home-manager, hardware, ... }@inputs:
+  outputs = { self, darwin, fenix, nixpkgs, home-manager, hardware, ... }@inputs:
     let
       inherit (self) outputs;
       forAllSystems = nixpkgs.lib.genAttrs [
@@ -47,7 +50,15 @@
         # "x86_64-darwin"
       ];
     in
-    rec {
+    let
+      # Helper function to create Darwin home-manager configurations
+      mkDarwinHome = hostname: home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.aarch64-darwin;
+        extraSpecialArgs = { inherit inputs outputs; };
+        modules = [ ./home-manager/macos.nix ];
+      };
+    in
+    {
       # Your custom packages
       # Acessible through 'nix build', 'nix shell', etc
       packages = forAllSystems (system:
@@ -86,20 +97,17 @@
         "yew" = darwin.lib.darwinSystem {
           specialArgs = { inherit inputs outputs; };
           system = "aarch64-darwin";
-          modules = [ 
-     # Load the Determinate module
-        determinate.darwinModules.default
-./macos/configuration.nix ];
-};
-         "ginkgo" = darwin.lib.darwinSystem {
+          modules = [
+            ./macos/configuration.nix
+          ];
+        };
+
+        "ginkgo" = darwin.lib.darwinSystem {
           specialArgs = { inherit inputs outputs; };
           system = "aarch64-darwin";
-          modules = [ 
-     # Load the Determinate module
-        determinate.darwinModules.default
-
-./macos/configuration.nix ];
-        
+          modules = [
+            ./macos/configuration.nix
+          ];
         };
       };
 
@@ -115,21 +123,8 @@
           ];
         };
 
-        "iheggie@yew" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.aarch64-darwin; # Home-manager requires 'pkgs' instance
-          extraSpecialArgs = { inherit inputs outputs; };
-          modules = [
-            ./home-manager/macos.nix
-          ];
-}; 
-        "iheggie@ginkgo" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.aarch64-darwin; # Home-manager requires 'pkgs' instance
-          extraSpecialArgs = { inherit inputs outputs; };
-          modules = [
-            ./home-manager/macos.nix
-          ];
-        };
-       };
-      
+        "iheggie@yew" = mkDarwinHome "yew";
+        "iheggie@ginkgo" = mkDarwinHome "ginkgo";
+      };
     };
 }

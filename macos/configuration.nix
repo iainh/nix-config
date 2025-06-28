@@ -3,6 +3,8 @@
 
   ids.gids.nixbld = 350;
 
+  system.primaryUser = "iheggie";
+
   nixpkgs = {
     # You can add overlays here
     overlays = [
@@ -10,6 +12,8 @@
       outputs.overlays.additions
       outputs.overlays.modifications
       outputs.overlays.unstable-packages
+      outputs.overlays.master-packages
+      inputs.fenix.overlays.default
 
       # You can also add overlays exported from other flakes:
       # neovim-nightly-overlay.overlays.default
@@ -50,10 +54,17 @@
 
     casks = [
       "1password"
-      "alacritty"
+      # "alacritty"
+      # "aerospace"
+      "discord"
       "firefox"
+      "steam"
       "zed"
     ];
+
+    # taps = [
+    #   "nikitabobko/aerospace"
+    # ];
   };
 
   # List packages installed in system profile. To search by name, run:
@@ -64,16 +75,26 @@
   programs.bash.enable = true;
 
   environment.systemPackages = with pkgs; [
-    alacritty
     nil
     nixpkgs-fmt
-    nmap
-    erlang_nox # Runtime dependency for gleam
-    go
-    gopls
-    gotools
-    go-tools
-    inputs.simple-completion-language-server.defaultPackage.${pkgs.system}
+    beamMinimalPackages.erlang
+    gleam
+    master.claude-code
+    # inputs.simple-completion-language-server.defaultPackage.${pkgs.system}
+    (fenix.complete.withComponents
+      [
+        "cargo"
+        "clippy"
+        "rust-src"
+        "rustc"
+        "rustfmt"
+      ])
+    rust-analyzer-nightly
+    taplo
+    qmk
+    zig
+    zls
+    exercism
   ];
 
   # nix.package = pkgs.nixUnstable;
@@ -86,29 +107,23 @@
 
   # You should generally set this to the total number of logical cores in your system.
   # $ sysctl -n hw.ncpu
-  services.nix-daemon.enable = true;
-  nix.settings.max-jobs = 8;
-  nix.settings.cores = 8;
-  nix.configureBuildUsers = true;
+  # services.nix-daemon.enable = true;
+  nix.settings.max-jobs = 6;
+  nix.settings.cores = 6;
+  # nix.configureBuildUsers = true;
 
   nix.extraOptions = ''
     builders-use-substitutes = true
-    experimental-features = nix-command flakes
   '';
 
   fonts = {
     packages = with pkgs; [
-      # jetbrains-mono
-      # noto-fonts
-      # noto-fonts-cjk
-      # noto-fonts-emoji
-      # liberation_ttf
-      # ia-writer-mono
-      # dm-mono
+      jetbrains-mono
       # josevka
-      intel-one-mono
-      (nerdfonts.override { fonts = [ "CodeNewRoman" ]; })
-
+      ia-writer-mono
+      # dm-mono
+      # intel-one-mono
+      # (nerdfonts.override { fonts = [ "CodeNewRoman" ]; })
     ];
   };
 }

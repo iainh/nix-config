@@ -50,13 +50,14 @@
     enable = true;
     shellAliases = {
       hms = "home-manager switch --flake ~/nix-config";
+      sysup = "nix run nix-darwin -- switch --flake ~/nix-config";
       grep = "grep --colour=auto";
       egrep = "grep -E --colour=auto";
       fgrep = "grep -F --colour=auto";
       ls = "ls --color=auto";
     };
 
-    initExtra = ''
+    initContent = ''
 
       export DIRENV_LOG_FORMAT=
 
@@ -93,7 +94,7 @@
     enable = true;
     shellAliases = {
       hms = "home-manager switch --flake ~/nix-config";
-      drs = "darwin-rebuild switch --flake ~/nix-config";
+      sysup = "darwin-rebuild switch --flake ~/nix-config";
     };
     initExtra = ''
             # Change the window title of X terminals
@@ -171,54 +172,6 @@
     '';
   };
 
-  programs.alacritty = {
-    enable = true;
-    settings = {
-      font.normal.family = "CodeNewRoman Nerd Font Mono";
-
-      font.offset.y = 2;
-      font.glyph_offset.y = 1;
-
-      # window.decorations = "buttonless";
-      window.decorations_theme_variant = "Dark";
-      # window.padding.y = 8;
-      # window.padding.x = 8;
-
-      # Colors (Wombat)
-      colors = {
-        # Default colors
-        primary = {
-          background = "0x1f1f1f";
-          foreground = "0xe5e1d8";
-        };
-
-        # Normal colors
-        normal = {
-          black = "0x000000";
-          red = "0xf7786d";
-          green = "0xbde97c";
-          yellow = "0xefdfac";
-          blue = "0x6ebaf8";
-          magenta = "0xef88ff";
-          cyan = "0x90fdf8";
-          white = "0xe5e1d8";
-        };
-
-        # Bright colors
-        bright = {
-          black = "0xb4b4b4";
-          red = "0xf99f92";
-          green = "0xe3f7a1";
-          yellow = "0xf2e9bf";
-          blue = "0xb3d2ff";
-          magenta = "0xe5bdff";
-          cyan = "0xc2fefa";
-          white = "0xffffff";
-        };
-      };
-    };
-  };
-
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;
@@ -228,8 +181,7 @@
     enable = true;
     package = inputs.helix-git.packages.${pkgs.system}.helix;
     settings = {
-      # theme = "curzon";
-      theme = "noctis_bordo";
+      theme = "gruvbox-material";
       editor.lsp.display-messages = true;
       editor.lsp.display-inlay-hints = true;
       editor.completion-trigger-len = 1;
@@ -246,7 +198,7 @@
             feature_words = true; # enable completion by word
             feature_snippets = true; # enable snippets
             feature_unicode_input = true; # enable "unicode input"
-            feature_paths = true; # enable path completion
+            # feature_paths = true; # enable path completion
           };
       };
       language = [{
@@ -262,49 +214,18 @@
     };
   };
 
-  programs.tmux = {
-    enable = true;
-    # aggressiveResize = true; -- Disabled to be iTerm-friendly
-    baseIndex = 1;
-    newSession = true;
-    # Stop tmux+escape craziness.
-    escapeTime = 0;
-    # Force tmux to use /tmp for sockets (WSL2 compat)
-    secureSocket = false;
-    # Enable mouse support
-    mouse = true;
-
-    plugins = with pkgs; [
-      tmuxPlugins.better-mouse-mode
-    ];
-
-    extraConfig = ''
-      set -g default-terminal "tmux"
-      set-option -sa terminal-overrides ",xterm*:Tc"
-
-      # Smart pane switching with awareness of Helix splits.
-      is_hx="ps -o state= -o comm= -t '#{pane_tty}' \
-          | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|hx)(diff)?$'"
-      bind -n C-h if-shell "$is_hx" "send-keys C-h"  "select-pane -L"
-      bind -n C-j if-shell "$is_hx" "send-keys C-j"  "select-pane -D"
-      bind -n C-k if-shell "$is_hx" "send-keys C-k"  "select-pane -U"
-      bind -n C-l if-shell "$is_hx" "send-keys C-l"  "select-pane -R"
-      bind -n C-\\ if-shell "$is_hx" "send-keys C-\\" "select-pane -l"
-    '';
-  };
-
   programs.git = {
     enable = true;
     userEmail = "iain@spiralpoint.org";
     userName = "Iain H";
     aliases = {
-      st = "status - sb";
+      st = "status -sb";
       ci = "commit";
       cm = "commit -am";
       br = "branch";
       co = "checkout";
       df = "diff";
-      undo = "reset - -hard";
+      undo = "reset --hard";
     };
   };
 
@@ -318,23 +239,16 @@
       embed-thumbnail = true;
       embed-subs = true;
       sub-langs = " all ";
-      downloader = "
-        aria2c ";
-      downloader-args = " aria2c:'-c - x8 - s8 - k1M' ";
+      downloader = "aria2c";
+      downloader-args = "aria2c:'-c -x8 -s8 -k1M'";
     };
   };
 
   programs.zellij = {
     enable = true;
     settings = {
-      default_layout = "
-        compact ";
+      default_layout = "compact";
     };
   };
 
 }
-
-
-
-
-
