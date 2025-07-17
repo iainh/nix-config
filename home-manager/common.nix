@@ -28,8 +28,74 @@
     enable = true;
     shellAliases = config.myShell.aliases;
 
-    initContent = config.myShell.commonInit + ''
+    # Enhanced history configuration
+    history = {
+      size = 50000;
+      save = 50000;
+      path = "$HOME/.zsh_history";
+      ignoreDups = true;
+      ignoreSpace = true;
+      extended = true;
+      share = true;
+    };
 
+    # Enable completion system
+    enableCompletion = true;
+    
+    # Useful zsh options
+    setOptions = [
+      "AUTO_CD"              # cd by typing directory name
+      "AUTO_PUSHD"           # push directories to stack automatically
+      "PUSHD_IGNORE_DUPS"    # don't push duplicate directories
+      "EXTENDED_GLOB"        # enable extended globbing
+      "GLOB_DOTS"            # include dotfiles in glob patterns
+      "CORRECT"              # command correction
+      "PROMPT_SUBST"         # enable prompt substitution
+      "HIST_VERIFY"          # verify history expansion before execution
+      "HIST_EXPIRE_DUPS_FIRST" # expire duplicate entries first
+      "HIST_IGNORE_DUPS"     # ignore duplicate commands
+      "HIST_IGNORE_SPACE"    # ignore commands starting with space
+      "HIST_REDUCE_BLANKS"   # remove superfluous blanks
+      "SHARE_HISTORY"        # share history between sessions
+      "INC_APPEND_HISTORY"   # append to history immediately
+    ];
+
+    # Completion configuration
+    completionInit = ''
+      # Enable completion caching
+      zstyle ':completion:*' use-cache yes
+      zstyle ':completion:*' cache-path ~/.zsh/cache
+      
+      # Case-insensitive completion
+      zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+      
+      # Menu selection for completions
+      zstyle ':completion:*' menu select
+      
+      # Group completions by type
+      zstyle ':completion:*' group-name ""
+      zstyle ':completion:*:descriptions' format '%B%d%b'
+      
+      # Better completion for kill command
+      zstyle ':completion:*:*:kill:*' menu yes select
+      zstyle ':completion:*:kill:*' force-list always
+      
+      # Completion for common commands
+      zstyle ':completion:*:git:*' verbose yes
+      zstyle ':completion:*:nix:*' verbose yes
+    '';
+
+    initExtra = config.myShell.commonInit + ''
+      # Key bindings for better navigation
+      bindkey '^[[A' history-substring-search-up
+      bindkey '^[[B' history-substring-search-down
+      bindkey '^R' history-incremental-search-backward
+      bindkey '^S' history-incremental-search-forward
+      
+      # Better word navigation
+      bindkey '^[[1;5C' forward-word
+      bindkey '^[[1;5D' backward-word
+      
       prompt_gentoo_setup () {
         local prompt_gentoo_prompt=''${1:-'blue'}
         local prompt_gentoo_user=''${2:-'green'}
@@ -42,8 +108,6 @@
           local base_prompt="%B%F{$prompt_gentoo_user}%n@%m%k "
         fi
         local post_prompt="%b%f%k"
-
-        #setopt noxtrace localoptions
 
         local path_prompt="%B%F{$prompt_gentoo_prompt}%1~"
         typeset -g PS1="$base_prompt$path_prompt %# $post_prompt"
