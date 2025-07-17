@@ -9,20 +9,12 @@
   system.primaryUser = "iheggie";
 
   nix = {
-    # This will add each flake input as a registry
-    # To make nix3 commands consistent with your flake
-    registry = lib.mapAttrs (_: value: { flake = value; }) inputs;
-
-    # This will additionally add your inputs to the system's legacy channels
-    # Making legacy nix commands consistent as well, awesome!
-    nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
-
-    # Note: Most settings are now in determinate-optimizations.nix
-    # Only keeping essential Darwin-specific settings here
-    settings = {
-      # Enable flakes and new 'nix' command
-      experimental-features = "nix-command flakes";
-    };
+    # Disable nix-darwin's Nix management for Determinate Nix compatibility
+    enable = false;
+    
+    # All other nix.* options (registry, nixPath, settings) are unavailable
+    # when nix.enable = false since nix-darwin doesn't manage Nix
+    # Determinate Nix handles flakes and registries automatically
   };
 
   homebrew = {

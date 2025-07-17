@@ -17,6 +17,9 @@
     ../modules/shared/shell.nix
   ];
 
+  # Disable home-manager news notifications
+  news.display = "silent";
+
   home.sessionVariables = {
     EDITOR = "hx";
     RUST_SRC_PATH = "${pkgs.fenix.stable.rust-src}/lib/rustlib/src/rust/library";
@@ -85,7 +88,7 @@
       zstyle ':completion:*:nix:*' verbose yes
     '';
 
-    initExtra = config.myShell.commonInit + ''
+    initContent = config.myShell.commonInit + ''
       # Key bindings for better navigation
       bindkey '^[[A' history-substring-search-up
       bindkey '^[[B' history-substring-search-down
