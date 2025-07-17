@@ -6,6 +6,15 @@ let
   # Common shell aliases used across bash and zsh
   commonAliases = {
     hms = "home-manager switch --flake ~/nix-config";
+    
+    # Determinate Nix optimized commands
+    rebuild = "nix run nixpkgs#nixos-rebuild -- switch --flake ~/nix-config --fast";
+    check = "nix flake check --fast";
+    update = "nix flake update --commit-lock-file";
+    gc = "nix store gc --verbose";
+    optimize = "nix store optimise";
+    
+    # Enhanced grep with color
     grep = "grep --colour=auto";
     egrep = "grep -E --colour=auto";
     fgrep = "grep -F --colour=auto";

@@ -3,6 +3,11 @@
 
 { inputs, outputs, ... }:
 {
+  # Import Determinate Nix optimizations
+  imports = [
+    ./determinate-optimizations.nix
+  ];
+
   nixpkgs = {
     # Shared overlays used across all configurations
     overlays = [

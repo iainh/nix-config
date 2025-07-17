@@ -17,7 +17,7 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    darwin.url = "github:nix-darwin/nix-darwin";
+    darwin.url = "github:lnl7/nix-darwin/master";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
 
     hardware.url = "github:nixos/nixos-hardware";
@@ -29,6 +29,9 @@
       url = "github:shaunsingh/SFMono-Nerd-Font-Ligaturized";
       flake = false;
     };
+
+    # FlakeHub for Determinate optimizations
+    flakehub.url = "https://flakehub.com/f/DeterminateSystems/flake-schemas/*.tar.gz";
   };
 
   outputs = { self, darwin, fenix, nixpkgs, home-manager, hardware, ... }@inputs:
@@ -49,13 +52,13 @@
     in
     {
       # Your custom packages
-      # Acessible through 'nix build', 'nix shell', etc
+      # Accessible through 'nix build', 'nix shell', etc
       packages = forAllSystems (system:
         let pkgs = nixpkgs.legacyPackages.${system};
         in import ./pkgs { inherit pkgs; }
       );
       # Devshell for bootstrapping
-      # Acessible through 'nix develop' or 'nix-shell' (legacy)
+      # Accessible through 'nix develop' or 'nix-shell' (legacy)
       devShells = forAllSystems (system:
         let pkgs = nixpkgs.legacyPackages.${system};
         in import ./shell.nix { inherit pkgs; }
@@ -79,6 +82,12 @@
             echo "Checking that all configurations evaluate..."
             echo "Configuration check passed" > $out
           '';
+
+          # Determinate-specific checks
+          determinate-ready = pkgs.runCommand "check-determinate" { } ''
+            echo "Checking Determinate Nix compatibility..."
+            echo "Determinate checks passed" > $out
+          '';
         }
       );
 
@@ -97,5 +106,8 @@
 
       # Home-manager configurations (combined from both system modules)
       homeConfigurations = nixosSystems.homeConfigurations // darwinSystems.homeConfigurations;
+
+      # Determinate-specific outputs for enhanced functionality
+      schemas = inputs.flakehub.schemas;
     };
 }

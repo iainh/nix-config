@@ -17,11 +17,11 @@
     # Making legacy nix commands consistent as well, awesome!
     nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
 
+    # Note: Most settings are now in determinate-optimizations.nix
+    # Only keeping essential Darwin-specific settings here
     settings = {
       # Enable flakes and new 'nix' command
       experimental-features = "nix-command flakes";
-      # Deduplicate and optimize nix store
-      auto-optimise-store = true;
     };
   };
 
@@ -66,21 +66,11 @@
     exercism
     nixd
   ];
-  nix.settings.allowed-users = [ "iheggie" "root" ];
-  nix.settings.trusted-users = [ "iheggie" "root" ];
-
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
   system.stateVersion = 4;
 
-  # You should generally set this to the total number of logical cores in your system.
-  # $ sysctl -n hw.ncpu
-  nix.settings.max-jobs = 6;
-  nix.settings.cores = 6;
-
-  nix.extraOptions = ''
-    builders-use-substitutes = true
-  '';
+  # Note: nix configuration moved to determinate-optimizations.nix
 
   fonts = {
     packages = with pkgs; [
