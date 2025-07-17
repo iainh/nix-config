@@ -23,7 +23,7 @@ let
 
   # Platform-specific aliases
   darwinAliases = {
-    sysup = "nix run nix-darwin -- switch --flake ~/nix-config";
+    sysup = "sudo nix run nix-darwin -- switch --flake ~/nix-config";
   };
 
   linuxAliases = {
