@@ -11,59 +11,24 @@
 
     # You can also split up your configuration and import pieces of it here:
     # ./nvim.nix
+    
+    # Import shared configurations
+    ../modules/shared/nixpkgs.nix
+    ../modules/shared/shell.nix
   ];
-
-  nixpkgs = {
-    # You can add overlays here
-    overlays = [
-      # Add overlays your own flake exports (from overlays and pkgs dir):
-      outputs.overlays.additions
-      outputs.overlays.modifications
-      outputs.overlays.unstable-packages
-
-      # You can also add overlays exported from other flakes:
-      # neovim-nightly-overlay.overlays.default
-
-      # Or define it inline, for example:
-      # (final: prev: {
-      #   hi = final.hello.overrideAttrs (oldAttrs: {
-      #     patches = [ ./change-hello-to-hi.patch ];
-      #   });
-      # })
-    ];
-    # Configure your nixpkgs instance
-    config = {
-      # Disable if you don't want unfree packages
-      allowUnfree = true;
-      # Workaround for https://github.com/nix-community/home-manager/issues/2942
-      allowUnfreePredicate = (_: true);
-    };
-  };
 
   home.sessionVariables = {
     EDITOR = "hx";
+    RUST_SRC_PATH = "${pkgs.fenix.stable.rust-src}/lib/rustlib/src/rust/library";
   };
 
-  home.sessionPath = [ "$HOME/.cargo/bin" ];
+  home.sessionPath = [ "$HOME/.cargo/bin" "$HOME/.local/bin" ];
 
   programs.zsh = {
     enable = true;
-    shellAliases = {
-      hms = "home-manager switch --flake ~/nix-config";
-      sysup = "nix run nix-darwin -- switch --flake ~/nix-config";
-      grep = "grep --colour=auto";
-      egrep = "grep -E --colour=auto";
-      fgrep = "grep -F --colour=auto";
-      ls = "ls --color=auto";
-    };
+    shellAliases = config.myShell.aliases;
 
-    initContent = ''
-
-      export DIRENV_LOG_FORMAT=
-
-      if [ -z "$__NIX_DARWIN_SET_ENVIRONMENT_DONE" ]; then
-        . /nix/store/qb6x3h3hkczrjblnv976fxg95mrgrkm0-set-environment
-      fi
+    initContent = config.myShell.commonInit + ''
 
       prompt_gentoo_setup () {
         local prompt_gentoo_prompt=''${1:-'blue'}
@@ -92,10 +57,7 @@
 
   programs.bash = {
     enable = true;
-    shellAliases = {
-      hms = "home-manager switch --flake ~/nix-config";
-      sysup = "darwin-rebuild switch --flake ~/nix-config";
-    };
+    shellAliases = config.myShell.aliases;
     initExtra = ''
             # Change the window title of X terminals
       case \$\{TERM\} in

@@ -16,32 +16,10 @@
 
     # Import your generated (nixos-generate-config) hardware configuration
     ./hardware-configuration.nix
+    
+    # Import shared nixpkgs configuration
+    ../modules/shared/nixpkgs.nix
   ];
-
-  nixpkgs = {
-    # You can add overlays here
-    overlays = [
-      # Add overlays your own flake exports (from overlays and pkgs dir):
-      outputs.overlays.additions
-      outputs.overlays.modifications
-      outputs.overlays.unstable-packages
-
-      # You can also add overlays exported from other flakes:
-      # neovim-nightly-overlay.overlays.default
-
-      # Or define it inline, for example:
-      # (final: prev: {
-      #   hi = final.hello.overrideAttrs (oldAttrs: {
-      #     patches = [ ./change-hello-to-hi.patch ];
-      #   });
-      # })
-    ];
-    # Configure your nixpkgs instance
-    config = {
-      # Disable if you don't want unfree packages
-      allowUnfree = true;
-    };
-  };
 
   nix = {
     # This will add each flake input as a registry
@@ -95,8 +73,7 @@
   # Access the keyboard for configuration as a normal non-root users
   hardware.keyboard.qmk.enable = true;
 
-  hardware.opengl.enable = true;
-  hardware.opengl.driSupport = true;
+  hardware.graphics.enable = true;
 
   services = {
     xserver = {
@@ -127,8 +104,7 @@
   };
 
   # Enable sound with pipewire.
-  sound.enable = true;
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -183,11 +159,11 @@
     j4-dmenu-desktop
   ];
 
-  fonts.packages= with pkgs; [
+  fonts.packages = with pkgs; [
     google-fonts
     jetbrains-mono
     noto-fonts
-    noto-fonts-cjk
+    noto-fonts-cjk-sans
     noto-fonts-emoji
     liberation_ttf
     iosevka-bin

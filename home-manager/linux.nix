@@ -32,7 +32,6 @@ in {
   # Enable home-manager and git
   programs.home-manager.enable = true;
 
-  # home.packages = [ pkgs.httpie ];
   home.packages = [ pkgs.hut ];
 
   home.stateVersion = "22.11";
@@ -109,8 +108,6 @@ in {
           "f" = "floating toggle";
           "Return" = "fullscreen toggle";
           "Space" = "focus mode_toggle";
-          # "a" = "focus parent";
-          # "s" = "layout stacking";
           "w" = "layout tabbed";
           "e" = "layout toggle split";
 

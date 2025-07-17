@@ -1,36 +1,12 @@
 { inputs, outputs, lib, config, pkgs, ... }: {
-
+  # Import shared configurations
+  imports = [
+    ../modules/shared/nixpkgs.nix
+  ];
 
   ids.gids.nixbld = 350;
 
   system.primaryUser = "iheggie";
-
-  nixpkgs = {
-    # You can add overlays here
-    overlays = [
-      # Add overlays your own flake exports (from overlays and pkgs dir):
-      outputs.overlays.additions
-      outputs.overlays.modifications
-      outputs.overlays.unstable-packages
-      outputs.overlays.master-packages
-      inputs.fenix.overlays.default
-
-      # You can also add overlays exported from other flakes:
-      # neovim-nightly-overlay.overlays.default
-
-      # Or define it inline, for example:
-      # (final: prev: {
-      #   hi = final.hello.overrideAttrs (oldAttrs: {
-      #     patches = [ ./change-hello-to-hi.patch ];
-      #   });
-      # })
-    ];
-    # Configure your nixpkgs instance
-    config = {
-      # Disable if you don't want unfree packages
-      allowUnfree = true;
-    };
-  };
 
   nix = {
     # This will add each flake input as a registry
@@ -45,7 +21,7 @@
       # Enable flakes and new 'nix' command
       experimental-features = "nix-command flakes";
       # Deduplicate and optimize nix store
-      #      optimise.automatic = true;
+      auto-optimise-store = true;
     };
   };
 
@@ -54,17 +30,11 @@
 
     casks = [
       "1password"
-      # "alacritty"
-      # "aerospace"
       "discord"
       "firefox"
       "steam"
       "zed"
     ];
-
-    # taps = [
-    #   "nikitabobko/aerospace"
-    # ];
   };
 
   # List packages installed in system profile. To search by name, run:
@@ -80,8 +50,7 @@
     beamMinimalPackages.erlang
     gleam
     master.claude-code
-    # inputs.simple-completion-language-server.defaultPackage.${pkgs.system}
-    (fenix.complete.withComponents
+    (fenix.stable.withComponents
       [
         "cargo"
         "clippy"
@@ -89,15 +58,14 @@
         "rustc"
         "rustfmt"
       ])
-    rust-analyzer-nightly
+    rust-analyzer
     taplo
     qmk
     zig
     zls
     exercism
+    nixd
   ];
-
-  # nix.package = pkgs.nixUnstable;
   nix.settings.allowed-users = [ "iheggie" "root" ];
   nix.settings.trusted-users = [ "iheggie" "root" ];
 
@@ -107,10 +75,8 @@
 
   # You should generally set this to the total number of logical cores in your system.
   # $ sysctl -n hw.ncpu
-  # services.nix-daemon.enable = true;
   nix.settings.max-jobs = 6;
   nix.settings.cores = 6;
-  # nix.configureBuildUsers = true;
 
   nix.extraOptions = ''
     builders-use-substitutes = true
@@ -119,11 +85,7 @@
   fonts = {
     packages = with pkgs; [
       jetbrains-mono
-      # josevka
       ia-writer-mono
-      # dm-mono
-      # intel-one-mono
-      # (nerdfonts.override { fonts = [ "CodeNewRoman" ]; })
     ];
   };
 }

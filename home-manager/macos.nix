@@ -25,19 +25,6 @@
   # Enable home-manager and git
   programs.home-manager.enable = true;
 
-  # home.packages = [ pkgs.httpie ];
-  # home.packages = [ pkgs.mold-wrapped ];
-
-  # home.file.".cargo/config.toml".text = ''
-  #   [target.x86_64-unknown-linux-gnu]
-  #   linker = "clang"
-  #   rustflags = ["-C", "link-arg=-fuse-ld=${pkgs.mold-wrapped}/bin/mold"]
-  # '';
-
-  # Set the font size of alacritty
-  #  programs.alacritty.settings.font.size = pkgs.lib.mkForce 16;
-  #  programs.alacritty.settings.font.normal.style = pkgs.lib.mkForce "Regular";
-
   programs.dircolors = {
     enable = true;
   };
