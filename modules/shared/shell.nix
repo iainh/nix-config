@@ -5,7 +5,10 @@
 let
   # Common shell aliases used across bash and zsh
   commonAliases = {
-    hms = "home-manager switch --flake ~/nix-config";
+    hms = "home-manager switch --flake ~/nix-config && echo && ~/nix-config/scripts/hm-diff.sh";
+    hmdiff = "~/nix-config/scripts/hm-diff.sh";
+    hmdiff-all = "~/nix-config/scripts/hm-diff.sh all";
+    hmgens = "home-manager generations";
     
     # Determinate Nix optimized commands
     rebuild = "nix run nixpkgs#nixos-rebuild -- switch --flake ~/nix-config --fast";
