@@ -11,7 +11,7 @@
 
     # You can also split up your configuration and import pieces of it here:
     # ./nvim.nix
-    
+
     # Import shared configurations
     ../modules/shared/nixpkgs.nix
     ../modules/shared/shell.nix
@@ -31,6 +31,15 @@
     enable = true;
     shellAliases = config.myShell.aliases;
 
+    # Plugins
+    plugins = [
+      {
+        name = "zsh-history-substring-search";
+        src = pkgs.zsh-history-substring-search;
+        file = "share/zsh-history-substring-search/zsh-history-substring-search.zsh";
+      }
+    ];
+
     # Enhanced history configuration
     history = {
       size = 50000;
@@ -44,23 +53,23 @@
 
     # Enable completion system
     enableCompletion = true;
-    
+
     # Useful zsh options
     setOptions = [
-      "AUTO_CD"              # cd by typing directory name
-      "AUTO_PUSHD"           # push directories to stack automatically
-      "PUSHD_IGNORE_DUPS"    # don't push duplicate directories
-      "EXTENDED_GLOB"        # enable extended globbing
-      "GLOB_DOTS"            # include dotfiles in glob patterns
-      "CORRECT"              # command correction
-      "PROMPT_SUBST"         # enable prompt substitution
-      "HIST_VERIFY"          # verify history expansion before execution
+      "AUTO_CD" # cd by typing directory name
+      "AUTO_PUSHD" # push directories to stack automatically
+      "PUSHD_IGNORE_DUPS" # don't push duplicate directories
+      "EXTENDED_GLOB" # enable extended globbing
+      "GLOB_DOTS" # include dotfiles in glob patterns
+      "CORRECT" # command correction
+      "PROMPT_SUBST" # enable prompt substitution
+      "HIST_VERIFY" # verify history expansion before execution
       "HIST_EXPIRE_DUPS_FIRST" # expire duplicate entries first
-      "HIST_IGNORE_DUPS"     # ignore duplicate commands
-      "HIST_IGNORE_SPACE"    # ignore commands starting with space
-      "HIST_REDUCE_BLANKS"   # remove superfluous blanks
-      "SHARE_HISTORY"        # share history between sessions
-      "INC_APPEND_HISTORY"   # append to history immediately
+      "HIST_IGNORE_DUPS" # ignore duplicate commands
+      "HIST_IGNORE_SPACE" # ignore commands starting with space
+      "HIST_REDUCE_BLANKS" # remove superfluous blanks
+      "SHARE_HISTORY" # share history between sessions
+      "INC_APPEND_HISTORY" # append to history immediately
     ];
 
     # Completion configuration
@@ -99,21 +108,36 @@
       bindkey '^[[1;5C' forward-word
       bindkey '^[[1;5D' backward-word
       
+      # Git branch function for zsh prompt
+      parse_git_branch_zsh() {
+        git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+      }
+
       prompt_gentoo_setup () {
         local prompt_gentoo_prompt=''${1:-'blue'}
         local prompt_gentoo_user=''${2:-'green'}
         local prompt_gentoo_root=''${3:-'red'}
 
-        if [ "$EUID" = '0' ]
-        then
-          local base_prompt="%B%F{$prompt_gentoo_root}%m%k "
+        # Build the base prompt conditionally
+        local base_prompt=""
+        if [ "$EUID" = '0' ]; then
+          # Always show root user and hostname
+          base_prompt="%B%F{$prompt_gentoo_root}%n@%m%k "
         else
-          local base_prompt="%B%F{$prompt_gentoo_user}%n@%m%k "
+          # Check if we're SSH'd in or if username isn't 'iheggie'
+          if [[ -n "$SSH_CLIENT" || -n "$SSH_TTY" || "$USER" != "iheggie" ]]; then
+            # Show full user@hostname when SSH'd or different user
+            base_prompt="%B%F{$prompt_gentoo_user}%n@%m%k "
+          else
+            # Hide user@hostname for local iheggie sessions
+            base_prompt=""
+          fi
         fi
         local post_prompt="%b%f%k"
 
         local path_prompt="%B%F{$prompt_gentoo_prompt}%1~"
-        typeset -g PS1="$base_prompt$path_prompt %# $post_prompt"
+        local git_prompt="%F{yellow}\$(parse_git_branch_zsh)%f"
+        typeset -g PS1="$base_prompt$path_prompt$git_prompt %# $post_prompt"
         typeset -g PS2="$base_prompt$path_prompt %_> $post_prompt"
         typeset -g PS3="$base_prompt$path_prompt ?# $post_prompt"
       }
@@ -168,17 +192,33 @@
 
       if ''${use_color} ; then
           if [[ ''${EUID} == 0 ]] ; then
-              PS1+='\[\033[01;31m\]\h\[\033[01;34m\] \w \$\[\033[00m\] '
+              # Always show root user and hostname
+              PS1+='\[\033[01;31m\]\u@\h\[\033[01;34m\] \w \$\[\033[00m\] '
           else
-              PS1+='\[\033[01;32m\]\u@\h\[\033[01;34m\] \w\[\033[33m\]$(parse_git_branch)\[\033[37m\] \$\[\033[00m\] '
+              # Check if we're SSH'd in or if username isn't 'iheggie'
+              if [[ -n "$SSH_CLIENT" || -n "$SSH_TTY" || "$USER" != "iheggie" ]]; then
+                  # Show full user@hostname when SSH'd or different user
+                  PS1+='\[\033[01;32m\]\u@\h\[\033[01;34m\] \w\[\033[33m\]$(parse_git_branch)\[\033[37m\] \$\[\033[00m\] '
+              else
+                  # Hide user@hostname for local iheggie sessions
+                  PS1+='\[\033[01;34m\]\w\[\033[33m\]$(parse_git_branch)\[\033[37m\] \$\[\033[00m\] '
+              fi
           fi
 
           alias grep='grep --colour=auto'
           alias egrep='grep -E --colour=auto'
           alias fgrep='grep -F --colour=auto'
       else
-          # show root@ when we don't have colors
-          PS1+='\u@\h \w \$ '
+          # Non-color fallback - apply same logic
+          if [[ ''${EUID} == 0 ]] ; then
+              PS1+='\u@\h \w \$ '
+          else
+              if [[ -n "$SSH_CLIENT" || -n "$SSH_TTY" || "$USER" != "iheggie" ]]; then
+                  PS1+='\u@\h \w \$ '
+              else
+                  PS1+='\w \$ '
+              fi
+          fi
       fi
 
       for sh in /etc/bash/bashrc.d/* ; do
@@ -210,12 +250,15 @@
     enable = true;
     package = inputs.helix-git.packages.${pkgs.system}.helix;
     settings = {
-      theme = "gruvbox-material";
+      # theme = "rasmus";
       editor.lsp.display-messages = true;
       editor.lsp.display-inlay-hints = true;
       editor.completion-trigger-len = 1;
       editor.soft-wrap.enable = true;
       editor.smart-tab.enable = true;
+      editor.cursorline = true;
+      editor.rulers = [ 100 ];
+      editor.bufferline = "always";
     };
     languages = {
       language-server.sclc = {
