@@ -1,6 +1,13 @@
 # Common home-manager configuration to be imported by an OS specific configuration
 
-{ inputs, outputs, lib, config, pkgs, ... }: {
+{ inputs
+, outputs
+, lib
+, config
+, pkgs
+, ...
+}:
+{
   # You can import other home-manager modules here
   imports = [
     # If you want to use modules your own flake exports (from modules/home-manager):
@@ -22,10 +29,12 @@
 
   home.sessionVariables = {
     EDITOR = "hx";
-    RUST_SRC_PATH = "${pkgs.fenix.stable.rust-src}/lib/rustlib/src/rust/library";
   };
 
-  home.sessionPath = [ "$HOME/.cargo/bin" "$HOME/.local/bin" ];
+  home.sessionPath = [
+    "$HOME/.cargo/bin"
+    "$HOME/.local/bin"
+  ];
 
   programs.zsh = {
     enable = true;
@@ -77,21 +86,21 @@
       # Enable completion caching
       zstyle ':completion:*' use-cache yes
       zstyle ':completion:*' cache-path ~/.zsh/cache
-      
+
       # Case-insensitive completion
       zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
-      
+
       # Menu selection for completions
       zstyle ':completion:*' menu select
-      
+
       # Group completions by type
       zstyle ':completion:*' group-name ""
       zstyle ':completion:*:descriptions' format '%B%d%b'
-      
+
       # Better completion for kill command
       zstyle ':completion:*:*:kill:*' menu yes select
       zstyle ':completion:*:kill:*' force-list always
-      
+
       # Completion for common commands
       zstyle ':completion:*:git:*' verbose yes
       zstyle ':completion:*:nix:*' verbose yes
@@ -103,11 +112,11 @@
       bindkey '^[[B' history-substring-search-down
       bindkey '^R' history-incremental-search-backward
       bindkey '^S' history-incremental-search-forward
-      
+
       # Better word navigation
       bindkey '^[[1;5C' forward-word
       bindkey '^[[1;5D' backward-word
-      
+
       # Git branch function for zsh prompt
       parse_git_branch_zsh() {
         git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
@@ -252,6 +261,7 @@
     settings = {
       # theme = "rasmus";
       editor.lsp.display-messages = true;
+      editor.lsp.display-progress-messages = true;
       editor.lsp.display-inlay-hints = true;
       editor.completion-trigger-len = 1;
       editor.soft-wrap.enable = true;
@@ -261,28 +271,123 @@
       editor.bufferline = "always";
     };
     languages = {
+      language-server.nucleotide-test-lsp = {
+        command = "/Users/iheggie/projects/nucleotide/target/debug/nucleotide-test-lsp";
+      };
+
       language-server.sclc = {
         command = "simple-completion-language-server";
-        config =
-          {
-            max_completion_items = 20; # set max completion results len for each group: words, snippets, unicode-input
-            snippets_first = true; # completions will return before snippets by default
-            feature_words = true; # enable completion by word
-            feature_snippets = true; # enable snippets
-            feature_unicode_input = true; # enable "unicode input"
-            # feature_paths = true; # enable path completion
-          };
+        config = {
+          max_completion_items = 20; # set max completion results len for each group: words, snippets, unicode-input
+          snippets_first = true; # completions will return before snippets by default
+          feature_words = true; # enable completion by word
+          feature_snippets = true; # enable snippets
+          feature_unicode_input = true; # enable "unicode input"
+          # feature_paths = true; # enable path completion
+        };
       };
-      language = [{
-        name = "nix";
-        formatter = { command = "nixpkgs-fmt"; };
-        auto-format = true;
-      }
+      language = [
         {
-          name = "rust";
+          # Test languages with nucleotide-test-lsp for completion testing
+
+          name = "test";
+          scope = "source.test";
+          file-types = [
+            "test"
+            "tst"
+          ];
+          language-servers = [ "nucleotide-test-lsp" ];
+          roots = [
+            ".test"
+            ".git"
+          ];
+          comment-token = "#";
+          indent = {
+            tab-width = 4;
+            unit = "    ";
+          };
+        }
+
+        {
+          name = "test-slow";
+          scope = "source.test-slow";
+          file-types = [
+            "slow"
+            "delay"
+          ];
+          language-servers = [ "nucleotide-test-lsp" ];
+          roots = [
+            ".test"
+            ".git"
+          ];
+          comment-token = "#";
+          indent = {
+            tab-width = 4;
+            unit = "    ";
+          };
+        }
+        {
+          name = "test-large";
+          scope = "source.test-large";
+          file-types = [
+            "large"
+            "many"
+          ];
+          language-servers = [ "nucleotide-test-lsp" ];
+          roots = [
+            ".test"
+            ".git"
+          ];
+          comment-token = "#";
+          indent = {
+            tab-width = 4;
+            unit = "    ";
+          };
+        }
+        {
+          name = "test-error";
+          scope = "source.test-error";
+          file-types = [
+            "error"
+            "fail"
+          ];
+          language-servers = [ "nucleotide-test-lsp" ];
+          roots = [
+            ".test"
+            ".git"
+          ];
+          comment-token = "#";
+          indent = {
+            tab-width = 4;
+            unit = "    ";
+          };
+        }
+        {
+          name = "test-empty";
+          scope = "source.test-empty";
+          file-types = [
+            "empty"
+            "none"
+          ];
+          language-servers = [ "nucleotide-test-lsp" ];
+          roots = [
+            ".test"
+            ".git"
+          ];
+          comment-token = "#";
+          indent = {
+            tab-width = 4;
+            unit = "    ";
+          };
+        }
+        {
+          name = "nix";
+          formatter = {
+            command = "nixpkgs-fmt";
+          };
           auto-format = true;
-          language-servers = [ "sclc" "rust-analyzer" ];
-        }];
+        }
+      ];
     };
   };
 

@@ -11,7 +11,7 @@
   nix = {
     # Disable nix-darwin's Nix management for Determinate Nix compatibility
     enable = false;
-    
+
     # All other nix.* options (registry, nixPath, settings) are unavailable
     # when nix.enable = false since nix-darwin doesn't manage Nix
     # Determinate Nix handles flakes and registries automatically
@@ -42,6 +42,11 @@
     beamMinimalPackages.erlang
     gleam
     master.claude-code
+    master.gemini-cli
+    master.codex
+    gh
+    nodejs_24
+    uv
     (fenix.stable.withComponents
       [
         "cargo"
