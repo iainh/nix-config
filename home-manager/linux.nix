@@ -24,10 +24,8 @@ in {
     ./common.nix
   ];
 
-  home = {
-    username = "iain";
-    homeDirectory = "/home/iain";
-  };
+  # Username and homeDirectory are provided by the top-level
+  # home-manager configuration via utils.mkHomeConfig.
 
   # Enable home-manager and git
   programs.home-manager.enable = true;

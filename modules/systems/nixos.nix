@@ -28,5 +28,15 @@ in
       };
       modules = [ ../../home-manager/linux.nix ];
     };
+
+    "iheggie@debian" = utils.mkHomeConfig {
+      system = "aarch64-linux";
+      username = "iheggie";
+      homeDirectory = utils.getHomeDirectory {
+        system = "aarch64-linux";
+        username = "iheggie";
+      };
+      modules = [ ../../home-manager/linux.nix ];
+    };
   };
 }
